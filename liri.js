@@ -3,6 +3,7 @@ require("dotenv").config();
 var moment = require('moment');
 var keys = require("./key.js");
 var axios = require("axios");
+var Spotify = require('node-spotify-api');
 var reqType = process.argv[2];
 var  reqSubject = "";
 var nodeArgs = process.argv;
@@ -10,21 +11,20 @@ var nodeArgs = process.argv;
 for (var i = 3; i < nodeArgs.length; i++) {
 
     if (i > 3 && i < nodeArgs.length) {
-      reqSubject = reqSubject + "+" + nodeArgs[i];
+      reqSubject = reqSubject + " " + nodeArgs[i];
     } else {
         reqSubject += nodeArgs[i];
   
     }
 }
 
-console.log(reqSubject)
 
 switch(reqType){
     case "concert-this":
         findConcerts(reqSubject);
         break;
     case "spotify-this-song":
-
+        findSpotify(reqSubject);
         break;  
     case "movie-this":
 
@@ -32,9 +32,6 @@ switch(reqType){
     case "do-what-it-says":
 
         break;
-
-
-
 }
 
 function findConcerts(artistName){
@@ -71,4 +68,27 @@ axios.get(queryUrl).then(
     }
     console.log(error.config);
   });
+}
+
+function findSpotify(songTitle){
+
+  var spotify = new Spotify({
+    id: keys.spotify.id,
+    secret: keys.spotify.secret
+  });
+  
+  spotify.search({ type: 'track', query: songTitle, limit: 1})
+  .then(function(response1) {
+    console.log("\n");
+    console.log("Artist: " + response1.tracks.items[0].artists[0].name)
+    console.log("Song title: " + response1.tracks.items[0].name);
+    console.log("Spotify link: " + response1.tracks.items[0].album.external_urls.spotify);
+    console.log("Album link: " + response1.tracks.items[0].album.name);
+    console.log("\n");
+  })
+  .catch(function(err) {
+    console.log(err);
+  });
+
+
 }
