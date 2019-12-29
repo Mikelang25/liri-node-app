@@ -92,3 +92,9 @@ function findSpotify(songTitle){
 
 
 }
+
+function findMovie(){
+
+
+  
+}
