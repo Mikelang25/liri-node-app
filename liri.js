@@ -83,13 +83,18 @@ function findSpotify(songTitle){
     secret: keys.spotify.secret
   });
   
-  spotify.search({ type: 'track', query: songTitle, limit: 1})
+  spotify.search({ type: 'track', query: songTitle, limit: 2})
   .then(function(response1) {
     console.log("\n");
     console.log("Artist: " + response1.tracks.items[0].artists[0].name)
     console.log("Song title: " + response1.tracks.items[0].name);
     console.log("Spotify link: " + response1.tracks.items[0].album.external_urls.spotify);
     console.log("Album link: " + response1.tracks.items[0].album.name);
+    console.log("\n");
+    console.log("Artist: " + response1.tracks.items[1].artists[0].name)
+    console.log("Song title: " + response1.tracks.items[1].name);
+    console.log("Spotify link: " + response1.tracks.items[1].album.external_urls.spotify);
+    console.log("Album link: " + response1.tracks.items[1].album.name);
     console.log("\n");
   })
   .catch(function(err) {
