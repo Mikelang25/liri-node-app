@@ -1,43 +1,79 @@
 require("dotenv").config();
 
+var fs = require("fs");
 var moment = require('moment');
 var keys = require("./key.js");
 var axios = require("axios");
 var Spotify = require('node-spotify-api');
 var reqType = process.argv[2];
-var  reqSubject = "";
+var reqSubject = "";
 var nodeArgs = process.argv;
+
 
 for (var i = 3; i < nodeArgs.length; i++) {
 
     if (i > 3 && i < nodeArgs.length) {
       reqSubject = reqSubject + " " + nodeArgs[i];
     } else {
-        reqSubject += nodeArgs[i];
+      reqSubject += nodeArgs[i];
   
     }
 }
-
+var text = reqType + "  " + reqSubject;
 
 switch(reqType){
     case "concert-this":
         findConcerts(reqSubject);
+        logRequest();
         break;
     case "spotify-this-song":
         if(reqSubject ===""){
           reqSubject = "The Sign"
         }
         findSpotify(reqSubject);
+        logRequest();
         break;  
     case "movie-this":
         if(reqSubject ===""){
           reqSubject = "Mr. Nobody"
         }
         findMovie(reqSubject);
+        logRequest();
         break;
     case "do-what-it-says":
-
+        doWhatItSays();
+        logRequest();
         break;
+}
+
+
+function logRequest(){
+  fs.appendFile("log.txt", text, function(err) {
+
+    // If an error was experienced we will log it.
+    if (err) {
+      console.log(err);
+    }
+  
+    // If no error is experienced, we'll log the phrase "Content Added" to our node console.
+    else {
+      console.log("Action successfully logged!");
+    }
+  
+  });
+}
+
+function doWhatItSays(){
+  fs.readFile("random.txt", "utf8", function(error, data) {
+
+    // If the code experiences any errors it will log the error to the console.
+    if (error) {
+      return console.log(error);
+    }
+  
+    findSpotify(data);
+  
+  });
 }
 
 function findConcerts(artistName){
