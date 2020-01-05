@@ -19,7 +19,7 @@ for (var i = 3; i < nodeArgs.length; i++) {
   
     }
 }
-var text = reqType + "  " + reqSubject;
+var text = reqType + "  " + reqSubject + ",";
 
 switch(reqType){
     case "concert-this":
