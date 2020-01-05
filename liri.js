@@ -28,7 +28,7 @@ switch(reqType){
         break;
     case "spotify-this-song":
         if(reqSubject ===""){
-          reqSubject = "The Sign"
+          reqSubject = "We are the Champions"
         }
         findSpotify(reqSubject);
         logRequest();
